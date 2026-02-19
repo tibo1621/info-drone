@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="drone.svg" type="image/svg+xml" />
+  <title>Info-drone</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+    .title {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      padding: 8px 15px;
+      border-radius: 6px;
+      font-weight: bold;
+      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+<div class="title">
+  Carte des restrictions drones - Geoportail
+</div>
+
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  // Création de la carte centrée sur la France
+  var map = L.map('map').setView([46.8, 2.5], 6);
+
+  // Fond de carte IGN (Plan standard)
+  var ignMap = L.tileLayer(
+    'https://data.geopf.fr/wmts?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile' +
+    '&LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2' +
+    '&STYLE=normal' +
+    '&TILEMATRIXSET=PM' +
+    '&FORMAT=image/png' +
+    '&TILEMATRIX={z}' +
+    '&TILEROW={y}' +
+    '&TILECOL={x}',
+    {
+      attribution: '© IGN / Geoportail',
+      maxZoom: 18
+    }
+  ).addTo(map);
+
+  // Couche restrictions drones
+  var droneRestrictions = L.tileLayer(
+    'https://data.geopf.fr/wmts?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile' +
+    '&LAYER=TRANSPORTS.DRONES.RESTRICTIONS' +
+    '&STYLE=normal' +
+    '&TILEMATRIXSET=PM' +
+    '&FORMAT=image/png' +
+    '&TILEMATRIX={z}' +
+    '&TILEROW={y}' +
+    '&TILECOL={x}',
+    {
+      attribution: '© DGAC',
+      opacity: 0.6,
+      maxZoom: 18
+    }
+  ).addTo(map);
+
+</script>
+
+</body>
+</html>
